@@ -56,9 +56,7 @@ class TimedMemoizer:
             
             expires_at = now + self.timeout
             result = func(*args, **kwargs)
-            func_cache[result_key] = result, expires_at
-
-            
+            func_cache[result_key] = result, expires_at         
             return result
             
         return caller
