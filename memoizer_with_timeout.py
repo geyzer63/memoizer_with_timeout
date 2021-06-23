@@ -10,7 +10,7 @@ class TimedMemoizer:
     On a call to any decorated function, cache audit may be invoked
     in order to clear stale cached results and prevent potential memory leak.
     """
-    __CACHE_AUDIT_TO = 600
+    __CACHE_AUDIT_TO = 1800
     __cache = {}
     __next_cleanup = time()
     
@@ -42,8 +42,13 @@ class TimedMemoizer:
         setattr(func, 'clear', partial(clazz.__clear, func))
         @wraps(func)
         def caller(*args, **kwargs):
-            func_cache = clazz.__cache.setdefault(func, {})
             now = int(time())
+            if now > clazz.__next_cleanup:
+                # Execute next cache audit
+                with Lock():
+                    clazz.__stale_cache_clear(now)
+
+            func_cache = clazz.__cache.setdefault(func, {})
             result_key = hash(f'{args}{kwargs}')
             result, expires_at = func_cache.get(result_key, (None, 0))
             if expires_at > now:
@@ -53,9 +58,6 @@ class TimedMemoizer:
             result = func(*args, **kwargs)
             func_cache[result_key] = result, expires_at
 
-            if now > clazz.__next_cleanup:
-                with Lock():
-                    clazz.__stale_cache_clear(now)
             
             return result
             
