@@ -4,9 +4,10 @@ from threading import Lock
 
 class TimedMemoizer:
     """ 
-    Memoization decorator, caching function call results
-    Call results expire cache expires when call time for a function with 
-    cached argument values is  greater than cached expiration timestamp.
+    Memoization decorator, caching function call results.
+    Call result cache expires when a call time for a function with 
+    cached arguments/return value is greater than cached expiration 
+    timestamp for that argumens.
     On a call to any decorated function, cache audit may be invoked
     in order to clear stale cached results and prevent potential memory leak.
     """
