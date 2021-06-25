@@ -11,7 +11,7 @@ def foo(*args):
 ```
 will create a decorated function where TTL of each cached result will be 30 seconds.
 
-Stale cached results are cleaned on periodic audits, that may be invoked on a call to any decorated function. Autit frequency is defined by the *\__CACHE_AUDIT_TO* attribute of the decorator class
+Stale cached results for __all decorated APIs__ are cleaned on periodic audits, that may be invoked on a call to any decorated function. Autit frequency is defined by the *\__CACHE_AUDIT_TO* attribute of the decorator class.
 
 User-initiated cache clean-up - per decorated function - can be done by calling *clear* attribute of the decorated function
 ```
