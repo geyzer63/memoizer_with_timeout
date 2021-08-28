@@ -35,7 +35,7 @@ class TimedMemoizer:
         self.__next_audit_ts = max(now + self.__timeout,
                                    self.__class__.__closest_audit_ts)
     
-    def __clear(self, func):
+    def __clear(self):
         """ Allows clearing of all cached results """
         self.__cache.clear()
     
@@ -67,4 +67,3 @@ class TimedMemoizer:
             return result
             
         return caller
-
